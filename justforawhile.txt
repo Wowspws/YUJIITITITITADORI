@@ -1,0 +1,1554 @@
+local player = game.Players.LocalPlayer
+
+local playerGui = player.PlayerGui
+
+local hotbar = playerGui:FindFirstChild("Hotbar")
+
+local backpack = hotbar:FindFirstChild("Backpack")
+
+local hotbarFrame = backpack:FindFirstChild("Hotbar")
+
+local baseButton = hotbarFrame:FindFirstChild("1").Base
+
+local ToolName = baseButton.ToolName
+
+ToolName.Text = "Black Flash"
+
+local player = game.Players.LocalPlayer
+
+local playerGui = player.PlayerGui
+
+local hotbar = playerGui:FindFirstChild("Hotbar")
+
+local backpack = hotbar:FindFirstChild("Backpack")
+
+local hotbarFrame = backpack:FindFirstChild("Hotbar")
+
+local baseButton = hotbarFrame:FindFirstChild("2").Base
+
+local ToolName = baseButton.ToolName
+
+ToolName.Text = "Beatdown"
+
+local player = game.Players.LocalPlayer
+
+local playerGui = player.PlayerGui
+
+local hotbar = playerGui:FindFirstChild("Hotbar")
+
+local backpack = hotbar:FindFirstChild("Backpack")
+
+local hotbarFrame = backpack:FindFirstChild("Hotbar")
+
+local baseButton = hotbarFrame:FindFirstChild("3").Base
+
+local ToolName = baseButton.ToolName
+
+ToolName.Text = "UpperPush"
+
+local player = game.Players.LocalPlayer
+
+local playerGui = player.PlayerGui
+
+local hotbar = playerGui:FindFirstChild("Hotbar")
+
+local backpack = hotbar:FindFirstChild("Backpack")
+
+local hotbarFrame = backpack:FindFirstChild("Hotbar")
+
+local baseButton = hotbarFrame:FindFirstChild("4").Base
+
+local ToolName = baseButton.ToolName
+
+ToolName.Text = "Opening Counter"
+
+local Players = game:GetService("Players")
+
+local player = Players.LocalPlayer
+
+local playerGui = player:WaitForChild("PlayerGui")
+
+local function findGuiAndSetText()
+
+    local screenGui = playerGui:FindFirstChild("ScreenGui")
+
+    if screenGui then
+
+        local magicHealthFrame = screenGui:FindFirstChild("MagicHealth")
+
+        if magicHealthFrame then
+
+            local textLabel = magicHealthFrame:FindFirstChild("TextLabel")
+
+            if textLabel then
+
+                textLabel.Text = "120% Potential"
+
+            end
+
+        end
+
+    end
+
+end
+
+playerGui.DescendantAdded:Connect(findGuiAndSetText)
+ 
+findGuiAndSetText()
+
+local TweenService = game:GetService("TweenService")
+local player = game.Players.LocalPlayer
+local camera = game.Workspace.CurrentCamera
+local playerGui = player:WaitForChild("PlayerGui")
+
+local character = player.Character or player.CharacterAdded:Wait()
+local humanoidRootPart = character:WaitForChild("HumanoidRootPart")
+
+-- Duration of the cutscene and fade
+local cutsceneDuration = 1
+local fadeDuration = 1
+
+-- Create a ScreenGui and Frame for the fade effect
+local screenGui = Instance.new("ScreenGui", playerGui)
+local frame = Instance.new("Frame", screenGui)
+frame.AnchorPoint = Vector2.new(0.5, 0.5)
+frame.Position = UDim2.new(0.5, 0, 0.5, 0)
+frame.Size = UDim2.new(900, 0, 900, 0) -- Set the size to be 900 times bigger
+frame.BackgroundColor3 = Color3.new(0, 0, 0)
+frame.BackgroundTransparency = 1
+
+-- Create a TextLabel for the "Super Saiyan" text in Chinese
+local textLabel = Instance.new("TextLabel", screenGui)
+textLabel.AnchorPoint = Vector2.new(0.5, 0.5)
+textLabel.Position = UDim2.new(0.5, 0, 0.5, 0)
+textLabel.Size = UDim2.new(0.2, 0, 0.1, 0)
+textLabel.BackgroundTransparency = 1
+textLabel.Text = "裕 二"
+textLabel.TextColor3 = Color3.new(1, 0, 0) -- Set text color to red
+textLabel.TextScaled = true
+textLabel.Font = Enum.Font.SourceSansBold
+textLabel.TextTransparency = 1
+
+-- TweenInfo for the fade effect
+local fadeInInfo = TweenInfo.new(
+    fadeDuration, -- Time
+    Enum.EasingStyle.Sine, -- EasingStyle
+    Enum.EasingDirection.InOut -- EasingDirection
+)
+
+local fadeOutInfo = TweenInfo.new(
+    fadeDuration, -- Time
+    Enum.EasingStyle.Sine, -- EasingStyle
+    Enum.EasingDirection.InOut -- EasingDirection
+)
+
+-- TweenInfo for the camera movement
+local tweenInfo = TweenInfo.new(
+    cutsceneDuration, -- Time
+    Enum.EasingStyle.Sine, -- EasingStyle
+    Enum.EasingDirection.InOut -- EasingDirection
+)
+
+-- Initial and final camera CFrame
+local initialCFrame = humanoidRootPart.CFrame * CFrame.new(0, -5, 0)
+local finalCFrame = humanoidRootPart.CFrame * CFrame.new(0, 2, 2) * CFrame.Angles(0, math.rad(180), 0)
+
+-- Create the Tween for the camera
+local cameraTween = TweenService:Create(camera, tweenInfo, {CFrame = finalCFrame})
+
+-- Create Tweens for the fade effect
+local fadeInTween = TweenService:Create(frame, fadeInInfo, {BackgroundTransparency = 0})
+local fadeOutTween = TweenService:Create(frame, fadeOutInfo, {BackgroundTransparency = 1})
+
+-- Create Tweens for the text transparency
+local textFadeInTween = TweenService:Create(textLabel, fadeInInfo, {TextTransparency = 0})
+local textFadeOutTween = TweenService:Create(textLabel, fadeOutInfo, {TextTransparency = 1})
+
+-- Function to play the camera cutscene and fade effect
+local function playCutscene()
+    -- Set initial camera position
+    camera.CFrame = initialCFrame
+    
+    -- Play the fade-in tween for the black screen and text
+    fadeInTween:Play()
+    textFadeInTween:Play()
+    fadeInTween.Completed:Wait()
+    
+    -- Play the camera tween
+    cameraTween:Play()
+    cameraTween.Completed:Wait()
+    
+    -- Play the fade-out tween for the black screen and text
+    fadeOutTween:Play()
+    textFadeOutTween:Play()
+    fadeOutTween.Completed:Wait()
+    
+    -- Reset the camera to its default behavior
+    camera.CameraSubject = character:WaitForChild("Humanoid")
+end
+
+-- Start the cutscene
+playCutscene()
+
+-- Define the animation IDs
+local targetAnimationId = "12463072679" -- The ID of the animation you want to detect
+local animationId = "" -- The ID of the animation you want to play
+
+-- Get the local player and TextChatService
+local player = game.Players.LocalPlayer
+local TextChatService = game:GetService("TextChatService")
+local ReplicatedStorage = game:GetService("ReplicatedStorage")
+
+-- Function to send a chat message
+local function chatMessage(str)
+    str = tostring(str)
+    if TextChatService.ChatVersion == Enum.ChatVersion.TextChatService then
+        TextChatService.TextChannels.RBXGeneral:SendAsync(str)
+    else
+        ReplicatedStorage.DefaultChatSystemChatEvents.SayMessageRequest:FireServer(str, "All")
+    end
+end
+
+-- Function to tilt the character down
+local function tiltDown(character)
+    local rootPart = character:WaitForChild("HumanoidRootPart")
+    local originalCFrame = rootPart.CFrame
+    local tiltAngle = math.rad(10) -- Adjust the tilt angle as needed
+    rootPart.CFrame = originalCFrame * CFrame.Angles(tiltAngle, 0, 0)
+end
+
+-- Function to reset the tilt
+local function resetTilt(character)
+    local rootPart = character:WaitForChild("HumanoidRootPart")
+    rootPart.CFrame = rootPart.CFrame * CFrame.Angles(-math.rad(10), 0, 0)
+end
+
+-- Function to create and play the animation
+local function playAnimation(character)
+    -- Create an animation instance
+    local animation = Instance.new("Animation")
+    animation.AnimationId = "rbxassetid://" .. animationId
+
+        -- Send chat messages
+        chatMessage("")
+        wait(0.5) -- Add a slight delay between the messages
+        chatMessage("")
+        wait(0.5) -- Add a slight delay between the messages
+        chatMessage("")
+
+    -- Load the animation onto the humanoid
+    local humanoid = character:FindFirstChildOfClass("Humanoid")
+    if humanoid then
+
+        wait() -- Add a slight delay between the messages
+
+        local animationTrack = humanoid:LoadAnimation(animation)
+        animationTrack:Play() -- Play the animation
+        
+        -- Tilt the character down
+        tiltDown(character)
+
+        -- Wait for the animation to complete
+        wait(10) -- Adjust this to match your animation's duration
+        animationTrack:Stop() -- Stop the animation
+        
+        -- Reset the tilt
+        resetTilt(character)
+    end
+end
+
+-- Function to stop the target animation and perform the desired action
+local function onAnimationPlayed(animationTrack)
+    if animationTrack and animationTrack.Animation and animationTrack.Animation.AnimationId == "rbxassetid://" .. targetAnimationId then
+        animationTrack:Stop() -- Stop the target animation
+        
+        -- Get the character
+        local character = game.Players.LocalPlayer.Character
+        if character then
+            -- Call the function to play the animation
+            playAnimation(character)
+        end
+    end
+end
+
+-- Connect the function to the humanoid's AnimationPlayed event for the local player's character
+local function onCharacterAdded(character)
+    local humanoid = character:FindFirstChildOfClass("Humanoid")
+    if humanoid then
+        humanoid.AnimationPlayed:Connect(onAnimationPlayed)
+    end
+end
+
+-- Detect when the local player's character is added to the game
+if player.Character then
+    onCharacterAdded(player.Character)
+end
+player.CharacterAdded:Connect(onCharacterAdded)
+
+-- Define the animation IDs
+local targetAnimationId = "12460977270" -- The ID of the animation you want to detect
+local animationId1 = "13560306510" -- The ID of the first animation to play
+local animationId2 = "12467789963" -- The ID of the second animation to play
+
+-- Define settings
+local animationDuration = 1 -- Duration in seconds for each animation to play
+local animationSpeed = 2 -- Speed of the animations
+
+-- Get the local player and services
+local player = game.Players.LocalPlayer
+local TextChatService = game:GetService("TextChatService")
+local ReplicatedStorage = game:GetService("ReplicatedStorage")
+
+-- Function to send a chat message
+local function chatMessage(str)
+    str = tostring(str)
+    if TextChatService.ChatVersion == Enum.ChatVersion.TextChatService then
+        TextChatService.TextChannels.RBXGeneral:SendAsync(str)
+    else
+        ReplicatedStorage.DefaultChatSystemChatEvents.SayMessageRequest:FireServer(str, "All")
+    end
+end
+
+-- Function to create and play the animation with a specified speed
+local function playAnimationsSequentially(character, speed, duration)
+    local humanoid = character:FindFirstChildOfClass("Humanoid")
+    if humanoid then
+        local function playAnimation(animationId)
+            local animation = Instance.new("Animation")
+            animation.AnimationId = "rbxassetid://" .. animationId
+            local animator = humanoid:FindFirstChildOfClass("Animator")
+            if animator then
+                local animationTrack = animator:LoadAnimation(animation)
+                animationTrack:Play()
+                animationTrack:AdjustSpeed(speed or 1)
+
+                return animationTrack
+            else
+
+                return nil
+            end
+        end
+
+        local track1 = playAnimation(animationId1)
+        if track1 then
+            task.wait(duration)
+            track1:Stop()
+
+        -- Display chat messages with Japanese translations
+        task.wait(0.2) -- Wait for 2 seconds before sending the next chat message
+	chatMessage("DIVERGENT BARRAGE || 逕庭連撃")
+
+            local track2 = playAnimation(animationId2)
+            if track2 then
+                task.wait(duration)
+                track2:Stop()
+            end
+        end
+
+    else
+
+    end
+end
+
+-- Function to stop the target animation and play the new animations
+local function onAnimationPlayed(animationTrack)
+    if animationTrack and animationTrack.Animation and animationTrack.Animation.AnimationId == "rbxassetid://" .. targetAnimationId then
+
+        animationTrack:Stop()
+
+        local character = player.Character
+        if character then
+            playAnimationsSequentially(character, animationSpeed, animationDuration)
+        else
+
+        end
+    else
+
+    end
+end
+
+-- Connect the function to the humanoid's AnimationPlayed event
+local function onCharacterAdded(character)
+    local humanoid = character:FindFirstChildOfClass("Humanoid")
+    if humanoid then
+        humanoid.AnimationPlayed:Connect(onAnimationPlayed)
+
+    else
+
+    end
+end
+
+if player.Character then
+    onCharacterAdded(player.Character)
+else
+
+end
+player.CharacterAdded:Connect(onCharacterAdded)
+
+-- Define the animation IDs
+local targetAnimationId = "12342141464" -- The ID of the animation you want to detect
+local animationId1 = "15957366251" -- The ID of the first animation to play
+local animationId2 = "12467789963" -- The ID of the second animation to play 124667789963
+
+-- Define settings
+local animationDuration = 2 -- Duration in seconds for each animation to play
+local animationSpeed = 0.7 -- Speed of the animations
+
+-- Get the local player and services 12309835105
+local player = game.Players.LocalPlayer
+local TextChatService = game:GetService("TextChatService")
+local ReplicatedStorage = game:GetService("ReplicatedStorage")
+
+-- Function to send a chat message
+local function chatMessage(str)
+    str = tostring(str)
+    if TextChatService.ChatVersion == Enum.ChatVersion.TextChatService then
+        TextChatService.TextChannels.RBXGeneral:SendAsync(str)
+    else
+        ReplicatedStorage.DefaultChatSystemChatEvents.SayMessageRequest:FireServer(str, "All")
+    end
+end
+
+-- Function to create and play the animation with a specified speed
+local function playAnimationsSequentially(character, speed, duration)
+    local humanoid = character:FindFirstChildOfClass("Humanoid")
+    if humanoid then
+        local function playAnimation(animationId)
+            local animation = Instance.new("Animation")
+            animation.AnimationId = "rbxassetid://" .. animationId
+            local animator = humanoid:FindFirstChildOfClass("Animator")
+            if animator then
+                local animationTrack = animator:LoadAnimation(animation)
+                animationTrack:Play()
+                animationTrack:AdjustSpeed(speed or 1)
+
+                return animationTrack
+            else
+
+                return nil
+            end
+        end
+
+        local track1 = playAnimation(animationId1)
+        if track1 then
+            task.wait(duration)
+            track1:Stop()
+
+        -- Display chat messages with Japanese translations
+        task.wait(0.2) -- Wait for 2 seconds before sending the next chat message
+        chatMessage("Yuji Itadori||ユウジ・イタドリ")
+        task.wait(0.2) -- Wait for 2 seconds before sending the next chat message
+        chatMessage("Has Now||現在")
+
+            task.wait(0.5)  
+
+            local track2 = playAnimation(animationId2)
+            if track2 then
+                task.wait(duration)
+                track2:Stop()
+            end
+        end
+
+        task.wait(0.4) -- Wait for 4 seconds before sending the next chat message
+        chatMessage("Reached 120% Of His Full Potential||彼の全潜在能力の120％に達しました")
+
+local player = game.Players.LocalPlayer
+
+local playerGui = player.PlayerGui
+
+local hotbar = playerGui:FindFirstChild("Hotbar")
+
+local backpack = hotbar:FindFirstChild("Backpack")
+
+local hotbarFrame = backpack:FindFirstChild("Hotbar")
+
+local baseButton = hotbarFrame:FindFirstChild("1").Base
+
+local ToolName = baseButton.ToolName
+
+ToolName.Text = "Divergent Barrage"
+
+local player = game.Players.LocalPlayer
+
+local playerGui = player.PlayerGui
+
+local hotbar = playerGui:FindFirstChild("Hotbar")
+
+local backpack = hotbar:FindFirstChild("Backpack")
+
+local hotbarFrame = backpack:FindFirstChild("Hotbar")
+
+local baseButton = hotbarFrame:FindFirstChild("2").Base
+
+local ToolName = baseButton.ToolName
+
+ToolName.Text = "Ending Slam"
+
+local player = game.Players.LocalPlayer
+
+local playerGui = player.PlayerGui
+
+local hotbar = playerGui:FindFirstChild("Hotbar")
+
+local backpack = hotbar:FindFirstChild("Backpack")
+
+local hotbarFrame = backpack:FindFirstChild("Hotbar")
+
+local baseButton = hotbarFrame:FindFirstChild("3").Base
+
+local ToolName = baseButton.ToolName
+
+ToolName.Text = "UpperPush"
+
+local player = game.Players.LocalPlayer
+
+local playerGui = player.PlayerGui
+
+local hotbar = playerGui:FindFirstChild("Hotbar")
+
+local backpack = hotbar:FindFirstChild("Backpack")
+
+local hotbarFrame = backpack:FindFirstChild("Hotbar")
+
+local baseButton = hotbarFrame:FindFirstChild("4").Base
+
+local ToolName = baseButton.ToolName
+
+ToolName.Text = "Finshing Rush"
+
+local Players = game:GetService("Players")
+
+local player = Players.LocalPlayer
+
+local playerGui = player:WaitForChild("PlayerGui")
+
+local function findGuiAndSetText()
+
+    local screenGui = playerGui:FindFirstChild("ScreenGui")
+
+    if screenGui then
+
+        local magicHealthFrame = screenGui:FindFirstChild("MagicHealth")
+
+        if magicHealthFrame then
+
+            local textLabel = magicHealthFrame:FindFirstChild("TextLabel")
+
+            if textLabel then
+
+                textLabel.Text = "120% Potential"
+
+            end
+
+        end
+
+    end
+
+end
+
+playerGui.DescendantAdded:Connect(findGuiAndSetText)
+ 
+findGuiAndSetText()
+
+    end
+end
+
+-- Function to stop the target animation and play the new animations
+local function onAnimationPlayed(animationTrack)
+    if animationTrack and animationTrack.Animation and animationTrack.Animation.AnimationId == "rbxassetid://" .. targetAnimationId then
+
+        animationTrack:Stop()
+
+        local character = player.Character
+        if character then
+            playAnimationsSequentially(character, animationSpeed, animationDuration)
+        else
+
+        end
+    else
+
+    end
+end
+
+-- Connect the function to the humanoid's AnimationPlayed event
+local function onCharacterAdded(character)
+    local humanoid = character:FindFirstChildOfClass("Humanoid")
+    if humanoid then
+        humanoid.AnimationPlayed:Connect(onAnimationPlayed)
+
+    else
+
+    end
+end
+
+if player.Character then
+    onCharacterAdded(player.Character)
+else
+
+end
+player.CharacterAdded:Connect(onCharacterAdded)
+
+-- Define the animation IDs
+local targetAnimationId = "14374357351" -- The ID of the animation you want to detect 12273188754
+local animationId1 = "12534735382" -- The ID of the first animation to play
+local animationId2 = "13556985475" -- The ID of the second animation to play
+
+-- Define settings
+local animationDuration = 1 -- Duration in seconds for each animation to play
+local animationSpeed = 1 -- Speed of the animations
+
+-- Get the local player and services
+local player = game.Players.LocalPlayer
+local TextChatService = game:GetService("TextChatService")
+local ReplicatedStorage = game:GetService("ReplicatedStorage")
+
+-- Function to send a chat message
+local function chatMessage(str)
+    str = tostring(str)
+    if TextChatService.ChatVersion == Enum.ChatVersion.TextChatService then
+        TextChatService.TextChannels.RBXGeneral:SendAsync(str)
+    else
+        ReplicatedStorage.DefaultChatSystemChatEvents.SayMessageRequest:FireServer(str, "All")
+    end
+end
+
+-- Function to create and play the animation with a specified speed
+local function playAnimationsSequentially(character, speed, duration)
+    local humanoid = character:FindFirstChildOfClass("Humanoid")
+    if humanoid then
+        local function playAnimation(animationId)
+            local animation = Instance.new("Animation")
+            animation.AnimationId = "rbxassetid://" .. animationId
+            local animator = humanoid:FindFirstChildOfClass("Animator")
+            if animator then
+                local animationTrack = animator:LoadAnimation(animation)
+                animationTrack:Play()
+                animationTrack:AdjustSpeed(speed or 1)
+
+                return animationTrack
+            else
+
+                return nil
+            end
+        end
+
+        local track1 = playAnimation(animationId1)
+        if track1 then
+            task.wait(duration)
+            track1:Stop()
+
+        -- Display chat messages with Japanese translations
+        chatMessage("I Will 私は")
+        wait(0.5) -- Add a slight delay between the messages
+        chatMessage("Kill You あなたを殺します")
+        wait(0.5) -- Add a slight delay between the messages
+        chatMessage("HERE AND NOW ここで今すぐ")
+
+            local track2 = playAnimation(animationId2)
+            if track2 then
+                task.wait(duration)
+                track2:Stop()
+            end
+        end
+
+    else
+
+    end
+end
+
+-- Function to stop the target animation and play the new animations 12296113986
+local function onAnimationPlayed(animationTrack)
+    if animationTrack and animationTrack.Animation and animationTrack.Animation.AnimationId == "rbxassetid://" .. targetAnimationId then
+
+        animationTrack:Stop()
+
+        local character = player.Character
+        if character then
+            playAnimationsSequentially(character, animationSpeed, animationDuration)
+        else
+
+        end
+    else
+
+    end
+end
+
+-- Connect the function to the humanoid's AnimationPlayed event
+local function onCharacterAdded(character)
+    local humanoid = character:FindFirstChildOfClass("Humanoid")
+    if humanoid then
+        humanoid.AnimationPlayed:Connect(onAnimationPlayed)
+
+    else
+
+    end
+end
+
+if player.Character then
+    onCharacterAdded(player.Character)
+else
+
+end
+player.CharacterAdded:Connect(onCharacterAdded)
+
+-- Define the animation IDs
+local targetAnimationId = "14798608838" -- The ID of the animation you want to detect
+local animationId = "12467789963" -- The ID of the animation you want to play
+
+-- Get the local player and TextChatService
+local player = game.Players.LocalPlayer
+local TextChatService = game:GetService("TextChatService")
+local ReplicatedStorage = game:GetService("ReplicatedStorage")
+
+-- Function to send a chat message
+local function chatMessage(str)
+    str = tostring(str)
+    if TextChatService.ChatVersion == Enum.ChatVersion.TextChatService then
+        TextChatService.TextChannels.RBXGeneral:SendAsync(str)
+    else
+        ReplicatedStorage.DefaultChatSystemChatEvents.SayMessageRequest:FireServer(str, "All")
+    end
+end
+
+-- Function to create and play the animation
+local function playAnimation(character)
+    -- Create an animation instance
+    local animation = Instance.new("Animation")
+    animation.AnimationId = "rbxassetid://" .. animationId
+
+    -- Load the animation onto the humanoid
+    local humanoid = character:FindFirstChildOfClass("Humanoid")
+    if humanoid then
+        local animationTrack = humanoid:LoadAnimation(animation)
+        animationTrack:Play() -- Play the animation
+
+        -- Send chat messages
+        chatMessage("I Will || 私は")
+        wait(0.5) -- Add a slight delay between the messages
+        chatMessage("Finish You || お前を終わらせる")
+        wait(0.5) -- Add a slight delay between the messages
+        chatMessage("RIGHT NOW!! || 今すぐここで!!")
+
+        -- Wait for the animation to complete
+        wait(10) -- Adjust this to match your animation's duration
+        animationTrack:Stop() -- Stop the animation
+    end
+end
+
+-- Function to stop the target animation and perform the desired action
+local function onAnimationPlayed(animationTrack)
+    if animationTrack and animationTrack.Animation and animationTrack.Animation.AnimationId == "rbxassetid://" .. targetAnimationId then
+        animationTrack:Stop() -- Stop the target animation
+        
+        -- Get the character
+        local character = game.Players.LocalPlayer.Character
+        if character then
+            -- Call the function to play the animation
+            playAnimation(character)
+        end
+    end
+end
+
+-- Connect the function to the humanoid's AnimationPlayed event for the local player's character
+local function onCharacterAdded(character)
+    local humanoid = character:FindFirstChildOfClass("Humanoid")
+    if humanoid then
+        humanoid.AnimationPlayed:Connect(onAnimationPlayed)
+    end
+end
+
+-- Detect when the local player's character is added to the game
+if player.Character then
+    onCharacterAdded(player.Character)
+end
+player.CharacterAdded:Connect(onCharacterAdded)
+
+-- Define the animation IDs
+local targetAnimationId = "12273188754" -- The ID of the animation you want to detect
+local animationId = "12534735382" -- The ID of the animation you want to play
+
+-- Get the local player and services
+local player = game.Players.LocalPlayer
+local TextChatService = game:GetService("TextChatService")
+local ReplicatedStorage = game:GetService("ReplicatedStorage")
+
+-- Function to send a chat message
+local function chatMessage(str)
+    str = tostring(str)
+    if TextChatService.ChatVersion == Enum.ChatVersion.TextChatService then
+        TextChatService.TextChannels.RBXGeneral:SendAsync(str)
+    else
+        ReplicatedStorage.DefaultChatSystemChatEvents.SayMessageRequest:FireServer(str, "All")
+    end
+end
+
+-- Function to create and play the animation
+local function playAnimation(character)
+    -- Create an animation instance
+    local animation = Instance.new("Animation")
+    animation.AnimationId = "rbxassetid://" .. animationId
+
+    -- Load the animation onto the humanoid
+    local humanoid = character:FindFirstChildOfClass("Humanoid")
+    if humanoid then
+        local animationTrack = humanoid:LoadAnimation(animation)
+        animationTrack:Play() -- Play the animation
+
+        wait(1.7) -- Add a slight delay between the messages
+
+	-- Function to play sound
+	local function playSound()
+	    local character = player.Character
+	    if character then
+	        local sound = Instance.new("Sound")
+	        sound.SoundId = 17554924491
+	        sound.Volume = 5
+	        sound.Parent = character:FindFirstChild("HumanoidRootPart")
+ 	       sound:Play()
+	    end
+	end
+
+        -- Emit particles
+        local function emitParticles(finalPart)
+            for _, child in ipairs(finalPart:GetChildren()) do
+                if child:IsA("ParticleEmitter") then
+                    child:Emit(1) -- Emit particles
+                end
+            end
+        end
+
+        -- Clone and emit particles
+        local final1 = game.ReplicatedStorage.Resources.KJEffects["KJWallCombo"].FinalImpact.Attachment:Clone()
+        final1.Parent = character["Right Arm"]
+        emitParticles(final1)
+
+        local final2 = game.ReplicatedStorage.Resources.KJEffects["KJWallCombo"].FinalImpact.Origin:Clone()
+        final2.Parent = character["Right Arm"]
+        emitParticles(final2)
+
+        local final3 = game.ReplicatedStorage.Resources.KJEffects["KJWallCombo"].FinalImpact.Attachment:Clone()
+        final3.Parent = character["Right Arm"]
+        emitParticles(final3)
+
+        local final4 = game.ReplicatedStorage.Resources.KJEffects["KJWallCombo"].FinalImpact.Attachment:Clone()
+        final4.Parent = character["Torso"]
+        emitParticles(final4)
+
+        local final5 = game.ReplicatedStorage.Resources.KJEffects["KJWallCombo"].FinalImpact.Attachment:Clone()
+        final5.Parent = character["Torso"]
+        emitParticles(final5)
+
+        local final6 = game.ReplicatedStorage.Resources.KJEffects["KJWallCombo"].FinalImpact.Attachment:Clone()
+        final6.Parent = character["Torso"]
+        emitParticles(final6)
+
+	local ss = game:GetService("SoundService")
+local Sound = Instance.new("Sound", ss)
+Sound.SoundId = "rbxassetid://17556294144"
+Sound.Volume = 10
+Sound:Play()
+
+        chatMessage("BLACK FLASH! || 黒閃!")
+
+        -- Wait for the animation to complete
+        wait(10) -- Adjust this to match your animation's duration
+        animationTrack:Stop() -- Stop the animation
+    end
+end
+
+-- Function to stop the target animation and perform the desired action
+local function onAnimationPlayed(animationTrack)
+    if animationTrack and animationTrack.Animation and animationTrack.Animation.AnimationId == "rbxassetid://" .. targetAnimationId then
+        animationTrack:Stop() -- Stop the target animation
+        
+        -- Get the character
+        local character = game.Players.LocalPlayer.Character
+        if character then
+            -- Call the function to play the animation
+            playAnimation(character)
+        end
+    end
+end
+
+-- Connect the function to the humanoid's AnimationPlayed event for the local player's character
+local function onCharacterAdded(character)
+    local humanoid = character:FindFirstChildOfClass("Humanoid")
+    if humanoid then
+        humanoid.AnimationPlayed:Connect(onAnimationPlayed)
+    end
+end
+
+-- Detect when the local player's character is added to the game
+if player.Character then
+    onCharacterAdded(player.Character)
+end
+player.CharacterAdded:Connect(onCharacterAdded)
+-- Define the animation IDs
+
+local targetAnimationId = "12447247483" -- The ID of the animation you want to detect
+local animationId = "13813099821" -- The ID of the animation you want to play
+
+-- Define the duration for which the animation should play
+local animationDuration = 2 -- Time in seconds
+local animationSpeed = 1.2 -- Speed of the animation
+
+-- Get the local player and services
+local player = game.Players.LocalPlayer
+local TextChatService = game:GetService("TextChatService")
+local ReplicatedStorage = game:GetService("ReplicatedStorage")
+
+-- Function to send a chat message
+local function chatMessage(str)
+    str = tostring(str)
+    if TextChatService.ChatVersion == Enum.ChatVersion.TextChatService then
+        TextChatService.TextChannels.RBXGeneral:SendAsync(str)
+    else
+        ReplicatedStorage.DefaultChatSystemChatEvents.SayMessageRequest:FireServer(str, "All")
+    end
+end
+
+-- Function to create and play the animation with a specified speed
+local function playAnimation(character, speed, duration)
+    -- Create an animation instance
+    local animation = Instance.new("Animation")
+    animation.AnimationId = "rbxassetid://" .. animationId
+
+    -- Load the animation onto the humanoid
+    local humanoid = character:FindFirstChildOfClass("Humanoid")
+    if humanoid then
+        local animationTrack = humanoid:LoadAnimation(animation)
+        animationTrack:Play() -- Play the animation
+        animationTrack:AdjustSpeed(speed or 4) -- Adjust the animation speed (default is 1 if not provided)
+
+        chatMessage("DIE!! || 死ね！！")
+        wait(1) -- Wait for 1 second before sending the next chat message
+        chatMessage("YOU FILTHY CURSE!! || お前は汚い呪いだ！！")
+
+        -- Wait for the specified duration and then stop the animation
+        wait(duration or animationDuration)
+        animationTrack:Stop() -- Stop the animation
+    else
+
+    end
+end
+
+-- Function to stop the target animation and perform the desired action after a delay
+local function onAnimationPlayed(animationTrack)
+    if animationTrack and animationTrack.Animation and animationTrack.Animation.AnimationId == "rbxassetid://" .. targetAnimationId then
+
+        animationTrack:Stop() -- Stop the target animation
+        
+        -- Wait for 0.1 seconds before performing the desired action
+        wait(0.1)
+        
+        -- Get the character
+        local character = player.Character
+        if character then
+            -- Call the function to play the animation with the desired speed and duration
+            playAnimation(character, animationSpeed, animationDuration)
+        else
+
+        end
+    else
+
+    end
+end
+
+-- Connect the function to the humanoid's AnimationPlayed event for the local player's character
+local function onCharacterAdded(character)
+    local humanoid = character:FindFirstChildOfClass("Humanoid")
+    if humanoid then
+        humanoid.AnimationPlayed:Connect(onAnimationPlayed)
+
+    else
+
+    end
+end
+
+-- Detect when the local player's character is added to the game
+if player.Character then
+    onCharacterAdded(player.Character)
+else
+
+end
+player.CharacterAdded:Connect(onCharacterAdded)
+
+-- Define the animation IDs
+local targetAnimationId = "12296113986" -- The ID of the animation you want to detect
+local animationId = "14046756619" -- The ID of the animation you want to play
+
+-- Define the duration for which the animation should play
+local animationDuration = 10 -- Time in seconds
+local animationSpeed = 1.8 -- Speed of the animation
+
+-- Get the local player and services
+local player = game.Players.LocalPlayer
+local TextChatService = game:GetService("TextChatService")
+local ReplicatedStorage = game:GetService("ReplicatedStorage")
+
+-- Function to send a chat message
+local function chatMessage(str)
+    str = tostring(str)
+    if TextChatService.ChatVersion == Enum.ChatVersion.TextChatService then
+        TextChatService.TextChannels.RBXGeneral:SendAsync(str)
+    else
+        ReplicatedStorage.DefaultChatSystemChatEvents.SayMessageRequest:FireServer(str, "All")
+    end
+end
+
+-- Function to create and play the animation with a specified speed
+local function playAnimation(character, speed, duration)
+    -- Create an animation instance
+    local animation = Instance.new("Animation")
+    animation.AnimationId = "rbxassetid://" .. animationId
+
+    -- Load the animation onto the humanoid
+    local humanoid = character:FindFirstChildOfClass("Humanoid")
+    if humanoid then
+        local animationTrack = humanoid:LoadAnimation(animation)
+        animationTrack:Play() -- Play the animation
+        animationTrack:AdjustSpeed(speed or 4) -- Adjust the animation speed (default is 1 if not provided)
+
+        -- Wait for the specified duration and then stop the animation
+        wait(duration or animationDuration)
+        animationTrack:Stop() -- Stop the animation
+    else
+
+    end
+end
+
+-- Function to stop the target animation and perform the desired action after a delay
+local function onAnimationPlayed(animationTrack)
+    if animationTrack and animationTrack.Animation and animationTrack.Animation.AnimationId == "rbxassetid://" .. targetAnimationId then
+
+        animationTrack:Stop() -- Stop the target animation
+        
+        -- Wait for 0.1 seconds before performing the desired action
+        wait(0.1)
+        
+        -- Get the character
+        local character = player.Character
+        if character then
+            -- Call the function to play the animation with the desired speed and duration
+            playAnimation(character, animationSpeed, animationDuration)
+        else
+
+        end
+    else
+ 
+    end
+end
+
+-- Connect the function to the humanoid's AnimationPlayed event for the local player's character
+local function onCharacterAdded(character)
+    local humanoid = character:FindFirstChildOfClass("Humanoid")
+    if humanoid then
+        humanoid.AnimationPlayed:Connect(onAnimationPlayed)
+
+    else
+
+    end
+end
+
+-- Detect when the local player's character is added to the game
+if player.Character then
+    onCharacterAdded(player.Character)
+else
+
+end
+player.CharacterAdded:Connect(onCharacterAdded)
+
+-- Define the animation IDs
+local targetAnimationId1 = "" -- The first target animation ID you want to detect
+local targetAnimationId2 = "12309835105" -- The second target animation ID you want to detect
+local animationId = "14057231976" -- The ID of the animation you want to play
+
+-- Define the duration for which the animation should play
+local animationDuration = 10 -- Time in seconds
+local animationSpeed = 1.8 -- Speed of the animation
+
+-- Get the local player
+local player = game.Players.LocalPlayer
+
+-- Function to create and play the animation with a specified speed
+local function playAnimation(character, speed, duration)
+    -- Create an animation instance
+    local animation = Instance.new("Animation")
+    animation.AnimationId = "rbxassetid://" .. animationId
+
+    -- Load the animation onto the humanoid
+    local humanoid = character:FindFirstChildOfClass("Humanoid")
+    if humanoid then
+        local animationTrack = humanoid:LoadAnimation(animation)
+        animationTrack:Play() -- Play the animation
+        animationTrack:AdjustSpeed(speed or 4) -- Adjust the animation speed (default is 1 if not provided)
+
+        
+        -- Wait for the specified duration and then stop the animation
+        wait(duration or animationDuration)
+        animationTrack:Stop() -- Stop the animation
+    else
+
+    end
+end
+
+-- Function to stop the target animation and perform the desired action after a delay
+local function onAnimationPlayed(animationTrack)
+    if animationTrack and animationTrack.Animation then
+        local animId = animationTrack.Animation.AnimationId
+        if animId == "rbxassetid://" .. targetAnimationId1 or animId == "rbxassetid://" .. targetAnimationId2 then
+
+            animationTrack:Stop() -- Stop the target animation
+            
+            -- Wait for 0.1 seconds before performing the desired action
+            wait(0.1)
+            
+            -- Get the character
+            local character = player.Character
+            if character then
+                -- Call the function to play the animation with the desired speed and duration
+                playAnimation(character, animationSpeed, animationDuration)
+            else
+
+            end
+        else
+
+        end
+    end
+end
+
+-- Connect the function to the humanoid's AnimationPlayed event for the local player's character
+local function onCharacterAdded(character)
+    local humanoid = character:FindFirstChildOfClass("Humanoid")
+    if humanoid then
+        humanoid.AnimationPlayed:Connect(onAnimationPlayed)
+
+    else
+
+    end
+end
+
+-- Detect when the local player's character is added to the game
+if player.Character then
+    onCharacterAdded(player.Character)
+else
+
+end
+player.CharacterAdded:Connect(onCharacterAdded)
+
+-- Define the animation IDs
+local targetAnimationId = "10470104242" -- The ID of the animation you want to detect
+local animationId = "13294790250" -- The ID of the animation you want to play 14057231976
+
+-- Get the local player
+local player = game.Players.LocalPlayer
+
+-- Function to create and play the animation
+local function playAnimation(character)
+    -- Create an animation instance
+    local animation = Instance.new("Animation")
+    animation.AnimationId = "rbxassetid://" .. animationId
+
+    -- Load the animation onto the humanoid
+    local humanoid = character:FindFirstChildOfClass("Humanoid")
+    if humanoid then
+        local animationTrack = humanoid:LoadAnimation(animation)
+        animationTrack:Play() -- Play the animation
+    end
+end
+
+-- Function to stop the target animation and perform the desired action after a delay
+local function onAnimationPlayed(animationTrack)
+    if animationTrack and animationTrack.Animation and animationTrack.Animation.AnimationId == "rbxassetid://" .. targetAnimationId then
+        animationTrack:Stop() -- Stop the target animation
+        
+        -- Get the character
+        local character = game.Players.LocalPlayer.Character
+        if character then
+            -- Call the function to play the animation
+            playAnimation(character)
+        end
+    end
+end
+
+-- Connect the function to the humanoid's AnimationPlayed event for the local player's character
+local function onCharacterAdded(character)
+    local humanoid = character:FindFirstChildOfClass("Humanoid")
+    if humanoid then
+        humanoid.AnimationPlayed:Connect(onAnimationPlayed)
+    end
+end
+
+-- Detect when the local player's character is added to the game
+if player.Character then
+    onCharacterAdded(player.Character)
+end
+player.CharacterAdded:Connect(onCharacterAdded)
+
+-- Define the animation IDs
+local targetAnimationId = "12351854556" -- The ID of the animation you want to detect
+local animationId = "12772543293" -- The ID of the animation you want to play
+
+-- Define the duration for which the animation should play
+local animationDuration = 0.6 -- Time in seconds
+local animationSpeed = 2 -- Speed of the animation
+
+-- Get the local player
+local player = game.Players.LocalPlayer
+
+-- Function to create and play the animation with a specified speed
+local function playAnimation(character, speed, duration)
+    -- Create an animation instance
+    local animation = Instance.new("Animation")
+    animation.AnimationId = "rbxassetid://" .. animationId
+
+local player = game.Players.LocalPlayer
+
+local playerGui = player.PlayerGui
+
+local hotbar = playerGui:FindFirstChild("Hotbar")
+
+local backpack = hotbar:FindFirstChild("Backpack")
+
+local hotbarFrame = backpack:FindFirstChild("Hotbar")
+
+local baseButton = hotbarFrame:FindFirstChild("1").Base
+
+local ToolName = baseButton.ToolName
+
+ToolName.Text = "Black Flash"
+
+local player = game.Players.LocalPlayer
+
+local playerGui = player.PlayerGui
+
+local hotbar = playerGui:FindFirstChild("Hotbar")
+
+local backpack = hotbar:FindFirstChild("Backpack")
+
+local hotbarFrame = backpack:FindFirstChild("Hotbar")
+
+local baseButton = hotbarFrame:FindFirstChild("2").Base
+
+local ToolName = baseButton.ToolName
+
+ToolName.Text = "Beatdown"
+
+local player = game.Players.LocalPlayer
+
+local playerGui = player.PlayerGui
+
+local hotbar = playerGui:FindFirstChild("Hotbar")
+
+local backpack = hotbar:FindFirstChild("Backpack")
+
+local hotbarFrame = backpack:FindFirstChild("Hotbar")
+
+local baseButton = hotbarFrame:FindFirstChild("3").Base
+
+local ToolName = baseButton.ToolName
+
+ToolName.Text = "UpperPush"
+
+local player = game.Players.LocalPlayer
+
+local playerGui = player.PlayerGui
+
+local hotbar = playerGui:FindFirstChild("Hotbar")
+
+local backpack = hotbar:FindFirstChild("Backpack")
+
+local hotbarFrame = backpack:FindFirstChild("Hotbar")
+
+local baseButton = hotbarFrame:FindFirstChild("4").Base
+
+local ToolName = baseButton.ToolName
+
+ToolName.Text = "Opening Counter"
+
+local Players = game:GetService("Players")
+
+local player = Players.LocalPlayer
+
+local playerGui = player:WaitForChild("PlayerGui")
+
+local function findGuiAndSetText()
+
+    local screenGui = playerGui:FindFirstChild("ScreenGui")
+
+    if screenGui then
+
+        local magicHealthFrame = screenGui:FindFirstChild("MagicHealth")
+
+        if magicHealthFrame then
+
+            local textLabel = magicHealthFrame:FindFirstChild("TextLabel")
+
+            if textLabel then
+
+                textLabel.Text = "120% Potential"
+
+            end
+
+        end
+
+    end
+
+end
+
+playerGui.DescendantAdded:Connect(findGuiAndSetText)
+ 
+findGuiAndSetText()
+
+    -- Load the animation onto the humanoid
+    local humanoid = character:FindFirstChildOfClass("Humanoid")
+    if humanoid then
+        local animationTrack = humanoid:LoadAnimation(animation)
+        animationTrack:Play() -- Play the animation
+        animationTrack:AdjustSpeed(speed or 4) -- Adjust the animation speed (default is 1 if not provided)
+
+        
+        -- Wait for the specified duration and then stop the animation
+        wait(duration or animationDuration)
+        animationTrack:Stop() -- Stop the animation
+    else
+
+    end
+end
+
+-- Function to stop the target animation and perform the desired action after a delay
+local function onAnimationPlayed(animationTrack)
+    if animationTrack and animationTrack.Animation and animationTrack.Animation.AnimationId == "rbxassetid://" .. targetAnimationId then
+
+        animationTrack:Stop() -- Stop the target animation
+        
+        -- Wait for 0.1 seconds before performing the desired action
+        wait(0.1)
+        
+        -- Get the character
+        local character = player.Character
+        if character then
+            -- Call the function to play the animation with the desired speed and duration
+            playAnimation(character, animationSpeed, animationDuration)
+        else
+
+        end
+    else
+
+    end
+end
+
+-- Connect the function to the humanoid's AnimationPlayed event for the local player's character
+local function onCharacterAdded(character)
+    local humanoid = character:FindFirstChildOfClass("Humanoid")
+    if humanoid then
+        humanoid.AnimationPlayed:Connect(onAnimationPlayed)
+
+    else
+
+    end
+end
+
+-- Detect when the local player's character is added to the game
+if player.Character then
+    onCharacterAdded(player.Character)
+else
+
+end
+player.CharacterAdded:Connect(onCharacterAdded)
+
+-- Define the animation IDs
+local targetAnimationId = "12510170988" -- The ID of the animation you want to detect
+local animationId = "18179181663" -- The ID of the animation you want to play
+
+-- Get the local player
+local player = game.Players.LocalPlayer
+
+-- Function to create and play the animation
+local function playAnimation(character)
+    -- Create an animation instance
+    local animation = Instance.new("Animation")
+    animation.AnimationId = "rbxassetid://" .. animationId
+
+    -- Load the animation onto the humanoid
+    local humanoid = character:FindFirstChildOfClass("Humanoid")
+    if humanoid then
+        local animationTrack = humanoid:LoadAnimation(animation)
+        animationTrack:Play() -- Play the animation 10470104242
+    end
+end
+
+-- Function to stop the target animation and perform the desired action after a delay
+local function onAnimationPlayed(animationTrack)
+    if animationTrack and animationTrack.Animation and animationTrack.Animation.AnimationId == "rbxassetid://" .. targetAnimationId then
+        animationTrack:Stop() -- Stop the target animation
+        
+        -- Get the character
+        local character = game.Players.LocalPlayer.Character
+        if character then
+            -- Call the function to play the animation
+            playAnimation(character)
+        end
+    end
+end
+
+-- Connect the function to the humanoid's AnimationPlayed event for the local player's character
+local function onCharacterAdded(character)
+    local humanoid = character:FindFirstChildOfClass("Humanoid")
+    if humanoid then
+        humanoid.AnimationPlayed:Connect(onAnimationPlayed)
+    end
+end
+
+-- Detect when the local player's character is added to the game
+if player.Character then
+    onCharacterAdded(player.Character)
+end
+player.CharacterAdded:Connect(onCharacterAdded)
+
+-- Define the animation IDs
+local targetAnimationId = "10469493270" -- The ID of the animation you want to detect
+local animationId = "13532562418" -- The ID of the animation you want to play
+
+-- Get the local player
+local player = game.Players.LocalPlayer
+
+-- Function to create and play the animation
+local function playAnimation(character)
+    -- Create an animation instance
+    local animation = Instance.new("Animation")
+    animation.AnimationId = "rbxassetid://" .. animationId
+
+    -- Load the animation onto the humanoid
+    local humanoid = character:FindFirstChildOfClass("Humanoid")
+    if humanoid then
+        local animationTrack = humanoid:LoadAnimation(animation)
+        animationTrack:Play() -- Play the animation
+    end
+end
+
+-- Function to stop the target animation and perform the desired action after a delay
+local function onAnimationPlayed(animationTrack)
+    if animationTrack and animationTrack.Animation and animationTrack.Animation.AnimationId == "rbxassetid://" .. targetAnimationId then
+        animationTrack:Stop() -- Stop the target animation
+        
+        -- Get the character
+        local character = game.Players.LocalPlayer.Character
+        if character then
+            -- Call the function to play the animation
+            playAnimation(character)
+        end
+    end
+end
+
+-- Connect the function to the humanoid's AnimationPlayed event for the local player's character
+local function onCharacterAdded(character)
+    local humanoid = character:FindFirstChildOfClass("Humanoid")
+    if humanoid then
+        humanoid.AnimationPlayed:Connect(onAnimationPlayed)
+    end
+end
+
+-- Detect when the local player's character is added to the game
+if player.Character then
+    onCharacterAdded(player.Character)
+end
+player.CharacterAdded:Connect(onCharacterAdded)
+
+-- Define the animation IDs
+local targetAnimationId = "10469630950" -- The ID of the animation you want to detect
+local animationId = "10469630950" -- The ID of the animation you want to Wplay
+
+-- Get the local player
+local player = game.Players.LocalPlayer
+
+-- Function to create and play the animation
+local function playAnimation(character)
+    -- Create an animation instance
+    local animation = Instance.new("Animation")
+    animation.AnimationId = "rbxassetid://" .. animationId
+
+    -- Load the animation onto the humanoid
+    local humanoid = character:FindFirstChildOfClass("Humanoid")
+    if humanoid then
+        local animationTrack = humanoid:LoadAnimation(animation)
+        animationTrack:Play() -- Play the animation
+    end
+end
+
+-- Function to stop the target animation and perform the desired action after a delay
+local function onAnimationPlayed(animationTrack)
+    if animationTrack and animationTrack.Animation and animationTrack.Animation.AnimationId == "rbxassetid://" .. targetAnimationId then
+        animationTrack:Stop() -- Stop the target animation
+        
+        -- Get the character
+        local character = game.Players.LocalPlayer.Character
+        if character then
+            -- Call the function to play the animation
+            playAnimation(character)
+        end
+    end
+end
+
+-- Connect the function to the humanoid's AnimationPlayed event for the local player's character
+local function onCharacterAdded(character)
+    local humanoid = character:FindFirstChildOfClass("Humanoid")
+    if humanoid then
+        humanoid.AnimationPlayed:Connect(onAnimationPlayed)
+    end
+end
+
+-- Detect when the local player's character is added to the game
+if player.Character then
+    onCharacterAdded(player.Character)
+end
+player.CharacterAdded:Connect(onCharacterAdded)
+
+-- Define the animation IDs
+local targetAnimationId = "10469643643" -- The ID of the animation you want to detect
+local animationId = "10469643643" -- The ID of the animation you want to play
+
+-- Get the local player
+local player = game.Players.LocalPlayer
+
+-- Function to create and play the animation
+local function playAnimation(character)
+    -- Create an animation instance
+    local animation = Instance.new("Animation")
+    animation.AnimationId = "rbxassetid://" .. animationId
+
+    -- Load the animation onto the humanoid
+    local humanoid = character:FindFirstChildOfClass("Humanoid")
+    if humanoid then
+        local animationTrack = humanoid:LoadAnimation(animation)
+        animationTrack:Play() -- Play the animation
+    end
+end
+
+-- Function to stop the target animation and perform the desired action after a delay
+local function onAnimationPlayed(animationTrack)
+    if animationTrack and animationTrack.Animation and animationTrack.Animation.AnimationId == "rbxassetid://" .. targetAnimationId then
+        animationTrack:Stop() -- Stop the target animation
+        
+        -- Get the character
+        local character = game.Players.LocalPlayer.Character
+        if character then
+            -- Call the function to play the animation
+            playAnimation(character)
+        end
+    end
+end
+
+-- Connect the function to the humanoid's AnimationPlayed event for the local player's character
+local function onCharacterAdded(character)
+    local humanoid = character:FindFirstChildOfClass("Humanoid")
+    if humanoid then
+        humanoid.AnimationPlayed:Connect(onAnimationPlayed)
+    end
+end
+
+-- Detect when the local player's character is added to the game
+if player.Character then
+    onCharacterAdded(player.Character)
+end
+player.CharacterAdded:Connect(onCharacterAdded)
